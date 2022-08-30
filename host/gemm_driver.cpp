@@ -11,6 +11,7 @@
 #include "host_memory.hpp"
 #include "gemm_cpu_opt0.hpp"
 #include "gemm_cpu_opt1.hpp"
+#include "gemm_cpu_opt2.hpp"
 
 using ADataType = float;
 using BDataType = float;
@@ -76,7 +77,8 @@ int main(int argc, char* argv[]){
 
     // opt code
     // auto gemm_cpu_opt = gemm_cpu_opt_reorder_loop<ADataType, BDataType, CDataType, AccDataType>;
-    auto gemm_cpu_opt = gemm_cpu_opt_tile_l1_cache<ADataType, BDataType, CDataType, AccDataType>;
+    // auto gemm_cpu_opt = gemm_cpu_opt_tile_l1_cache<ADataType, BDataType, CDataType, AccDataType>;
+    auto gemm_cpu_opt = gemm_cpu_opt_tile_l1_cache_avx512<ADataType, BDataType, CDataType, AccDataType>;
     gemm_cpu_opt(GemmDesc.APtr, 
                  GemmDesc.BPtr,
                  GemmDesc.CPtrOpt,
