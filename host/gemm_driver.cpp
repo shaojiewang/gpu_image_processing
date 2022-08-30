@@ -9,7 +9,8 @@
 #include "gemm_descrpitor.hpp"
 #include "gemm_reference_code.hpp"
 #include "host_memory.hpp"
-#include "gemm_cpu_opt.hpp"
+#include "gemm_cpu_opt0.hpp"
+#include "gemm_cpu_opt1.hpp"
 
 using ADataType = float;
 using BDataType = float;
@@ -74,22 +75,24 @@ int main(int argc, char* argv[]){
     std::cout << "ref gemm time: " << static_cast<float>(ms / times) << "ms." << std::endl;
 
     // opt code
-    gemm_cpu_opt_reorder_loop<ADataType, BDataType, CDataType, AccDataType>(GemmDesc.APtr, 
-                                                                            GemmDesc.BPtr,
-                                                                            GemmDesc.CPtrOpt,
-                                                                            GemmDesc.M,
-                                                                            GemmDesc.N,
-                                                                            GemmDesc.K);
+    // auto gemm_cpu_opt = gemm_cpu_opt_reorder_loop<ADataType, BDataType, CDataType, AccDataType>;
+    auto gemm_cpu_opt = gemm_cpu_opt_tile_l1_cache<ADataType, BDataType, CDataType, AccDataType>;
+    gemm_cpu_opt(GemmDesc.APtr, 
+                 GemmDesc.BPtr,
+                 GemmDesc.CPtrOpt,
+                 GemmDesc.M,
+                 GemmDesc.N,
+                 GemmDesc.K);
 
     auto mStartOpt0 = std::chrono::high_resolution_clock::now();
     for(int i = 0; i < times; i++)
     {
-        gemm_cpu_opt_reorder_loop<ADataType, BDataType, CDataType, AccDataType>(GemmDesc.APtr, 
-                                                                                GemmDesc.BPtr,
-                                                                                GemmDesc.CPtrOpt,
-                                                                                GemmDesc.M,
-                                                                                GemmDesc.N,
-                                                                                GemmDesc.K);
+        gemm_cpu_opt(GemmDesc.APtr, 
+                     GemmDesc.BPtr,
+                     GemmDesc.CPtrOpt,
+                     GemmDesc.M,
+                     GemmDesc.N,
+                     GemmDesc.K);
     }
     auto mStopOpt0 = std::chrono::high_resolution_clock::now();
 
