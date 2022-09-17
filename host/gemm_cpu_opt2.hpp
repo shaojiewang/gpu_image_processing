@@ -13,21 +13,36 @@ static inline void gemm_cpu_macro_tile_4x16(const ADataType* APtr, const BDataTy
 {
     //const BDataType* BTmp = BPtr;
     __m512 v_b_k0_f_16, v_b_k1_f_16, v_b_k2_f_16, v_b_k3_f_16, v_c_f_16;
-    __m128* p_v_a_f_4;
+    __m512 v_a_k0_f_16, v_a_k1_f_16, v_a_k2_f_16, v_a_k3_f_16;
+    __m128 v_a_f_4, v_a_f_k0_4, v_a_f_k1_4, v_a_f_k2_4, v_a_f_k3_4;
     for(int i = 0; i < MTile; i += 1)
     {
         for(int k = 0; k < KTile; k += 4)
         {
             //ADataType AData = APtr[i * K + k];
-            p_v_a_f_4 = static_cast<__m128*>(APtr + i * K + k);
+            v_a_f_4 = _mm_load_ps(APtr + i * K + k);
+            v_a_f_k0_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x0);
+            v_a_f_k1_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x11);
+            v_a_f_k2_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x22);
+            v_a_f_k3_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x33);
+            v_a_k0_f_16 = _mm512_broadcast_f32x2(v_a_f_k0_4);
+            v_a_k1_f_16 = _mm512_broadcast_f32x2(v_a_f_k1_4);
+            v_a_k2_f_16 = _mm512_broadcast_f32x2(v_a_f_k2_4);
+            v_a_k3_f_16 = _mm512_broadcast_f32x2(v_a_f_k3_4);
             for(int j = 0; j < NTile; j += 16)
             {   
                 v_b_k0_f_16 = _mm512_load_ps(BPtr + k * N + j);
                 v_b_k1_f_16 = _mm512_load_ps(BPtr + (k + 1) * N + j);
                 v_b_k2_f_16 = _mm512_load_ps(BPtr + (k + 2) * N + j);
                 v_b_k3_f_16 = _mm512_load_ps(BPtr + (k + 3 ) * N + j);
+
                 v_c_f_16 = _mm512_load_ps(CPtr + i * N + j);
-                v_c_f_16 = _mm512_4fmadd_ps(v_c_f_16, v_b_k0_f_16, v_b_k1_f_16, v_b_k2_f_16, v_b_k3_f_16, p_v_a_f_4);
+
+                v_c_f_16 = _mm512_fmadd_ps(v_a_k0_f_16, v_b_k0_f_16, v_c_f_16);
+                v_c_f_16 = _mm512_fmadd_ps(v_a_k1_f_16, v_b_k1_f_16, v_c_f_16);
+                v_c_f_16 = _mm512_fmadd_ps(v_a_k2_f_16, v_b_k2_f_16, v_c_f_16);
+                v_c_f_16 = _mm512_fmadd_ps(v_a_k3_f_16, v_b_k3_f_16, v_c_f_16);
+
                 _mm512_store_ps(CPtr + i * N + j, v_c_f_16);
                 //CPtr[i * N + j] += AData * BPtr[k * N + j];
             }
