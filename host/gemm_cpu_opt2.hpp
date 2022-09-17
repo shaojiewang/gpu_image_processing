@@ -22,9 +22,9 @@ static inline void gemm_cpu_macro_tile_4x16(const ADataType* APtr, const BDataTy
             //ADataType AData = APtr[i * K + k];
             v_a_f_4 = _mm_load_ps(APtr + i * K + k);
             v_a_f_k0_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x0);
-            v_a_f_k1_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x11);
-            v_a_f_k2_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x22);
-            v_a_f_k3_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x33);
+            v_a_f_k1_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0x55);
+            v_a_f_k2_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0xaa);
+            v_a_f_k3_4 = _mm_shuffle_ps(v_a_f_4, v_a_f_4, 0xff);
             v_a_k0_f_16 = _mm512_broadcast_f32x2(v_a_f_k0_4);
             v_a_k1_f_16 = _mm512_broadcast_f32x2(v_a_f_k1_4);
             v_a_k2_f_16 = _mm512_broadcast_f32x2(v_a_f_k2_4);
