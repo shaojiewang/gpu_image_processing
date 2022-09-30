@@ -15,7 +15,7 @@ void gemm_reference(const ADateType* APtr, const BDateType* BPtr, CDateType* CPt
             {
                 sum += APtr[i * K + k] * BPtr[k * N + j];
             }
-            CPtr[i * M + j] = sum;
+            CPtr[i * N + j] = sum;
         }
     }
 }
