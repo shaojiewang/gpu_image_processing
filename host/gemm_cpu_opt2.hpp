@@ -118,9 +118,9 @@ void gemm_cpu_opt_tile_l1_cache_avx512(const ADataType* APtr, const BDataType* B
     memset(CPtr, 0, M * N * sizeof(CDataType));
     for(int i = 0; i < M; i += mc)
     {
-        for(int j = 0; j < N; j += nc)
+        for(int k = 0; k < K; k += kc)
         {
-            for(int k = 0; k < K; k += kc)
+            for(int j = 0; j < N; j += nc)
             {
                 gemm_cpu_macro_tile_M_N_K<ADataType, 
                                          BDataType, 
@@ -130,15 +130,16 @@ void gemm_cpu_opt_tile_l1_cache_avx512(const ADataType* APtr, const BDataType* B
                                          nc, 
                                          kc>
                     (ATmp, BTmp, CTmp, M, N, K);
-                ATmp += kc;
-                BTmp += kc * N;
+                
+                BTmp += nc;
+                CTmp += nc;
             }
-            CTmp += nc;
-            BTmp += nc - (K * N);
-            ATmp += -K;
+            ATmp += kc;
+            BTmp += kc * N - N;
+            CTmp -= N;
         }
-        ATmp += mc * K;
-        CTmp += mc * N - N;
+        ATmp += mc * K - K;
+        CTmp += mc * N;
         BTmp = BPtr;
     }
 }
