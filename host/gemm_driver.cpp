@@ -102,7 +102,13 @@ int main(int argc, char* argv[]){
                    std::chrono::duration_cast<std::chrono::microseconds>(mStopOpt0 - mStartOpt0).count()) *
                1e-3;
 
+    float gflops = GemmDesc.M * GemmDesc.N * GemmDesc.K / 1024 / 1024 / msOpt0 * 2;
+    float peak = 3.7 * 16 * 2 * 2;
+    float efficiency = gflops / peak;
+
     std::cout << "cpu opt0 gemm time: " << static_cast<float>(msOpt0 / times) << "ms." << std::endl;
+
+    std::cout << "perf data: gflops: " << gflops << ", efficiency: " << efficiency * 100 << "%" << std::endl;
 
     // check err
     CDataType tol = static_cast<CDataType>(0.001);
