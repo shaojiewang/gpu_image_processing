@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
                    std::chrono::duration_cast<std::chrono::microseconds>(mStopOpt0 - mStartOpt0).count()) *
                1e-3;
 
-    float gflops = GemmDesc.M * GemmDesc.N * GemmDesc.K / 1024 / 1024 / msOpt0 * 2;
+    float gflops = static_cast<float>(GemmDesc.M * GemmDesc.N * GemmDesc.K) * 2 / 1024.0 / 1024.0 / msOpt0;
     float peak = 3.7 * 16 * 2 * 2;
     float efficiency = gflops / peak;
 

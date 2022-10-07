@@ -15,7 +15,7 @@ static inline void gemm_cpu_micro_tile_8x48x32(const ADataType* APtr, const BDat
     __m512 v_c_m4n1_f_16, v_c_m5n1_f_16, v_c_m6n1_f_16, v_c_m7n1_f_16;
     __m512 v_c_m0n2_f_16, v_c_m1n2_f_16, v_c_m2n2_f_16, v_c_m3n2_f_16;
     __m512 v_c_m4n2_f_16, v_c_m5n2_f_16, v_c_m6n2_f_16, v_c_m7n2_f_16;
-    __m512 v_a_m0_f_16, v_a_m1_f_16, v_a_m2_f_16, v_a_m3_f_16;
+    __m512 v_a_m0_f_16, v_a_m1_f_16;
 
     const ADataType* ATmp = APtr;
 
