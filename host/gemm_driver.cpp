@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
                                                                  GemmDesc.K);
 
     auto mStart = std::chrono::high_resolution_clock::now();
-    for(int i = 0; i < times; i++)
+    for(int i = 0; i < 2; i++)
     {
         gemm_reference<ADataType, BDataType, CDataType, AccDataType>(GemmDesc.APtr, 
                                                                      GemmDesc.BPtr,
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
                    std::chrono::duration_cast<std::chrono::microseconds>(mStop - mStart).count()) *
                1e-3;
 
-    std::cout << "ref gemm time: " << static_cast<float>(ms / times) << "ms." << std::endl;
+    std::cout << "ref gemm time: " << static_cast<float>(ms / 2) << "ms." << std::endl;
 
     // opt code
     // auto gemm_cpu_opt = gemm_cpu_opt_reorder_loop<ADataType, BDataType, CDataType, AccDataType>;
@@ -102,8 +102,8 @@ int main(int argc, char* argv[]){
                    std::chrono::duration_cast<std::chrono::microseconds>(mStopOpt0 - mStartOpt0).count()) *
                1e-3;
 
-    float gflops = static_cast<float>(GemmDesc.M * GemmDesc.N * GemmDesc.K) * 2 / 1024.0 / 1024.0 / msOpt0;
-    float peak = 3.7 * 16 * 2 * 2;
+    float gflops = static_cast<float>(GemmDesc.M * GemmDesc.N * GemmDesc.K) * 2 / 1024.0 / 1024.0 / msOpt0 * times;
+    float peak = 2.1 * 16 * 2 * 2;
     float efficiency = gflops / peak;
 
     std::cout << "cpu opt0 gemm time: " << static_cast<float>(msOpt0 / times) << "ms." << std::endl;

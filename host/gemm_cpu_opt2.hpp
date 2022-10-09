@@ -19,36 +19,37 @@ static inline void gemm_cpu_micro_tile_8x48x32(const ADataType* APtr, const BDat
 
     const ADataType* ATmp = APtr;
 
-    v_c_m0n0_f_16 = _mm512_load_ps(CPtr + 0 * N + 0 * 16);
-    v_c_m0n1_f_16 = _mm512_load_ps(CPtr + 0 * N + 1 * 16);
-    v_c_m0n2_f_16 = _mm512_load_ps(CPtr + 0 * N + 2 * 16);
+    v_c_m0n0_f_16 = _mm512_loadu_ps(CPtr + 0 * N + 0 * 16);
+    v_c_m0n1_f_16 = _mm512_loadu_ps(CPtr + 0 * N + 1 * 16);
+    v_c_m0n2_f_16 = _mm512_loadu_ps(CPtr + 0 * N + 2 * 16);
 
-    v_c_m1n0_f_16 = _mm512_load_ps(CPtr + 1 * N + 0 * 16);
-    v_c_m1n1_f_16 = _mm512_load_ps(CPtr + 1 * N + 1 * 16);
-    v_c_m1n2_f_16 = _mm512_load_ps(CPtr + 1 * N + 2 * 16);
+    v_c_m1n0_f_16 = _mm512_loadu_ps(CPtr + 1 * N + 0 * 16);
+    v_c_m1n1_f_16 = _mm512_loadu_ps(CPtr + 1 * N + 1 * 16);
+    v_c_m1n2_f_16 = _mm512_loadu_ps(CPtr + 1 * N + 2 * 16);
 
-    v_c_m2n0_f_16 = _mm512_load_ps(CPtr + 2 * N + 0 * 16);
-    v_c_m2n1_f_16 = _mm512_load_ps(CPtr + 2 * N + 1 * 16);
-    v_c_m2n2_f_16 = _mm512_load_ps(CPtr + 2 * N + 2 * 16);
+    v_c_m2n0_f_16 = _mm512_loadu_ps(CPtr + 2 * N + 0 * 16);
+    v_c_m2n1_f_16 = _mm512_loadu_ps(CPtr + 2 * N + 1 * 16);
+    v_c_m2n2_f_16 = _mm512_loadu_ps(CPtr + 2 * N + 2 * 16);
 
-    v_c_m3n0_f_16 = _mm512_load_ps(CPtr + 3 * N + 0 * 16);
-    v_c_m3n1_f_16 = _mm512_load_ps(CPtr + 3 * N + 1 * 16);
-    v_c_m3n2_f_16 = _mm512_load_ps(CPtr + 3 * N + 2 * 16); 
+    v_c_m3n0_f_16 = _mm512_loadu_ps(CPtr + 3 * N + 0 * 16);
+    v_c_m3n1_f_16 = _mm512_loadu_ps(CPtr + 3 * N + 1 * 16);
+    v_c_m3n2_f_16 = _mm512_loadu_ps(CPtr + 3 * N + 2 * 16); 
 
-    v_c_m4n0_f_16 = _mm512_load_ps(CPtr + 4 * N + 0 * 16);
-    v_c_m4n1_f_16 = _mm512_load_ps(CPtr + 4 * N + 1 * 16);
-    v_c_m4n2_f_16 = _mm512_load_ps(CPtr + 4 * N + 2 * 16);
+    v_c_m4n0_f_16 = _mm512_loadu_ps(CPtr + 4 * N + 0 * 16);
+    v_c_m4n1_f_16 = _mm512_loadu_ps(CPtr + 4 * N + 1 * 16);
+    v_c_m4n2_f_16 = _mm512_loadu_ps(CPtr + 4 * N + 2 * 16);
 
-    v_c_m5n0_f_16 = _mm512_load_ps(CPtr + 5 * N + 0 * 16);
-    v_c_m5n1_f_16 = _mm512_load_ps(CPtr + 5 * N + 1 * 16);
-    v_c_m5n2_f_16 = _mm512_load_ps(CPtr + 5 * N + 2 * 16);
-    v_c_m6n0_f_16 = _mm512_load_ps(CPtr + 6 * N + 0 * 16);
-    v_c_m6n1_f_16 = _mm512_load_ps(CPtr + 6 * N + 1 * 16);
-    v_c_m6n2_f_16 = _mm512_load_ps(CPtr + 6 * N + 2 * 16);
+    v_c_m5n0_f_16 = _mm512_loadu_ps(CPtr + 5 * N + 0 * 16);
+    v_c_m5n1_f_16 = _mm512_loadu_ps(CPtr + 5 * N + 1 * 16);
+    v_c_m5n2_f_16 = _mm512_loadu_ps(CPtr + 5 * N + 2 * 16);
 
-    v_c_m7n0_f_16 = _mm512_load_ps(CPtr + 7 * N + 0 * 16);
-    v_c_m7n1_f_16 = _mm512_load_ps(CPtr + 7 * N + 1 * 16); 
-    v_c_m7n2_f_16 = _mm512_load_ps(CPtr + 7 * N + 2 * 16); 
+    v_c_m6n0_f_16 = _mm512_loadu_ps(CPtr + 6 * N + 0 * 16);
+    v_c_m6n1_f_16 = _mm512_loadu_ps(CPtr + 6 * N + 1 * 16);
+    v_c_m6n2_f_16 = _mm512_loadu_ps(CPtr + 6 * N + 2 * 16);
+
+    v_c_m7n0_f_16 = _mm512_loadu_ps(CPtr + 7 * N + 0 * 16);
+    v_c_m7n1_f_16 = _mm512_loadu_ps(CPtr + 7 * N + 1 * 16); 
+    v_c_m7n2_f_16 = _mm512_loadu_ps(CPtr + 7 * N + 2 * 16); 
 
     for(int k = 0; k < 32; k++)
     {
